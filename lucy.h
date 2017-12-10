@@ -2,6 +2,14 @@
 
 #include <memory>
 #include <random>
+#include <string>
+#include <sstream>
+
+#include <unordered_map>
+
+#include <fstream>
+
+//#include <windows.h>
 
 #include "my_stream.h"
 #include "image.h"
@@ -11,43 +19,86 @@ using namespace std;
 
 class Lucy: public Person
 {
-	using Action = void (Lucy::*)();
-
-	Action *acts;
-
 	unique_ptr<Stream> stream;
 
-	unique_ptr<Person> opponent;
+	bool result = true;
 
-	string last_msg;
+	string in, out;
 
-	
+	vector<string> in_msg, out_mgs;
 
-	/*bool continue_conv;
+	unordered_map<string, Image*> memory;
 
-	Random_Wish* wish;
+	vector<string> conv;
 
-	int base_wish;*/
+	ostringstream oss;
+	istringstream iss;
+
+	vector<Image*> cache;
+
+	Image* find(string name)
+	{
+		if (!memory[name])
+		{
+			memory[name] = new Image(name);
+		}
+
+		return memory[name];
+	};
+
+	void update_ref()
+	{
+		for (int i = 0; i < cache.size() - 1; ++i)
+		{
+			cache[i]->add_ref(cache[i + 1]);
+		}
+	};
+
+	void read()
+	{
+		Image *image;
+		string word;
+		iss.str(stream->in());
+
+		in_msg.clear();
+
+		while (iss >> word)
+		{
+			image = find(word);
+			image->update();
+
+			cache.push_back(image);
+
+			in_msg.push_back(word);
+		}
+
+		update_ref();
+	};
+
+	void write()
+	{
+		if (oss)
+		{
+			stream->out(oss.str());
+		}
+		
+		oss.clear();
+	};
+
+	void load();
+
+	void save();
 
 public:
 	Lucy(Stream* _stream) : stream(_stream)
 	{
-		/*::Person("Lucy", "19", "woman");
-		opponent.reset(new Person());
-		
-		focus.reset(new Image("Приветствие"));
-
-		continue_conv = true;
-
-		action = new my_fnc[3];
-		action[0] = &Lucy::ask;
-		action[1] = &Lucy::say;
-		action[2] = &Lucy::wait;
-
-		wish = new Random_Wish();
-
-		base_wish = 30;*/
+		load();
 	};
+
+	~Lucy()
+	{
+		save();
+	}
 
 	void talk();
 

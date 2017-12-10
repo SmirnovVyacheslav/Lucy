@@ -1,5 +1,13 @@
 #pragma once
 
+#include <thread>
+#include <mutex>
+
+#include <chrono>
+#include <future>
+
+#include <queue>
+
 #include <string>
 #include <iostream>
 
@@ -17,10 +25,14 @@ public:
 
 class Console_Stream : public Stream
 {
-	string input;
+	//string input;
+
+	queue<string> input_msg;
+
+	//void input_thread(queue<string>& str);
 
 public:
-	//Console_Stream() {};
+	Console_Stream();
 
 	string in();
 
