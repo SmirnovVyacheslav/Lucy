@@ -13,11 +13,11 @@
 
 #include "my_stream.h"
 #include "image.h"
-#include "person.h"
+//#include "person.h"
 
 using namespace std;
 
-class Lucy: public Person
+class Lucy//: public Person
 {
 	unique_ptr<Stream> stream;
 
@@ -48,9 +48,12 @@ class Lucy: public Person
 
 	void update_ref()
 	{
-		for (int i = 0; i < cache.size() - 1; ++i)
+		if (cache.size() > 1)
 		{
-			cache[i]->add_ref(cache[i + 1]);
+			for (int i = 0; i < cache.size() - 1; ++i)
+			{
+				cache[i]->add_ref(cache[i + 1]);
+			}
 		}
 	};
 
@@ -58,9 +61,11 @@ class Lucy: public Person
 	{
 		Image *image;
 		string word;
+		iss.clear();
 		iss.str(stream->in());
 
 		in_msg.clear();
+		cache.clear();
 
 		while (iss >> word)
 		{
@@ -77,7 +82,7 @@ class Lucy: public Person
 
 	void write()
 	{
-		if (oss)
+		if (oss.str() != "")
 		{
 			stream->out(oss.str());
 		}
