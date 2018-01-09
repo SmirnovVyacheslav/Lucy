@@ -2,13 +2,13 @@
 
 mutex inp_mtx;
 
-void input_thread(queue<string>& input_msg)
+void input_thread(queue<wstring>& input_msg)
 {
-	string str;
+	wstring str;
 
 	while (true)
 	{
-		getline(cin, str);
+		getline(wcin, str);
 
 		inp_mtx.lock();
 		input_msg.push(str);
@@ -16,30 +16,19 @@ void input_thread(queue<string>& input_msg)
 	}
 }
 
-//void Console_Stream::input_thread(queue<string>& input_msg)
-//{
-//	string str;
-//
-//	while (true)
-//	{
-//		getline(cin, str);
-//
-//		inp_mtx.lock();
-//		input_msg.push(str);
-//		inp_mtx.unlock();
-//	}
-//}
-
 Console_Stream::Console_Stream()
 {
+	wcin.imbue(locale(".866"));
+	wcout.imbue(locale(".866"));
+
 	thread input(input_thread, ref(input_msg));
 
 	input.detach();
 };
 
-string Console_Stream::in()
+wstring Console_Stream::in()
 {
-	string res = "";
+	wstring res;
 
 	if (inp_mtx.try_lock())
 	{
@@ -55,7 +44,7 @@ string Console_Stream::in()
 	return res;
 }
 
-void Console_Stream::out(string str)
+void Console_Stream::out(wstring str)
 {
-	cout << str << endl;
+	wcout << str << endl;
 }

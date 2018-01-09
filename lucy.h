@@ -23,20 +23,20 @@ class Lucy//: public Person
 
 	bool result = true;
 
-	string in, out;
+	wstring in, out;
 
-	vector<string> in_msg, out_mgs;
+	vector<wstring> in_msg, out_mgs;
 
-	unordered_map<string, Image*> memory;
+	unordered_map<wstring, Image*> memory;
 
-	vector<string> conv;
+	vector<wstring> conv;
 
-	ostringstream oss;
-	istringstream iss;
+	wostringstream oss;
+	wistringstream iss;
 
 	vector<Image*> cache;
 
-	Image* find(string name)
+	Image* find(wstring name)
 	{
 		if (!memory[name])
 		{
@@ -60,7 +60,7 @@ class Lucy//: public Person
 	void read()
 	{
 		Image *image;
-		string word;
+		wstring word;
 		iss.clear();
 		iss.str(stream->in());
 
@@ -82,7 +82,7 @@ class Lucy//: public Person
 
 	void write()
 	{
-		if (oss.str() != "")
+		if (oss.str() != L"")
 		{
 			stream->out(oss.str());
 		}

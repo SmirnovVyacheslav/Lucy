@@ -12,13 +12,13 @@ using namespace std;
 
 class Image;
 
-ostream& operator << (ostream &stream, Image &image);
+wostream& operator << (wostream &stream, Image &image);
 
-istream& operator >> (istream &stream, Image &image);
+wistream& operator >> (wistream &stream, Image &image);
 
 class Image
 {
-	string _name;
+	wstring _name;
 
 	int lru = 0;//last recently used
 
@@ -26,16 +26,16 @@ class Image
 
 	//vector<Image*> attr;
 
-	unordered_map<string, int> ref;
+	unordered_map<wstring, int> ref;
 
 	//vector<pair<string, int>> ref;//reference with weight
 
 public:
 	
-	friend ostream& operator << (ostream &stream, Image &image);
-	friend istream& operator >> (istream &stream, Image &image);
+	friend wostream& operator << (wostream &stream, Image &image);
+	friend wistream& operator >> (wistream &stream, Image &image);
 
-	Image(string name) : _name(name) {};
+	Image(wstring name) : _name(name) {};
 
 	Image() {};
 
@@ -57,7 +57,7 @@ public:
 		}
 	}
 
-	string name()
+	wstring name()
 	{
 		return _name;
 	};

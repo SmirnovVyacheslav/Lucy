@@ -9,7 +9,7 @@ bool Lucy::think()
 {
 	read();//listern
 
-	if (in_msg.size() > 0 && in_msg[0] == "Bye")
+	if (in_msg.size() > 0 && in_msg[0] == L"Пока")
 	{
 		result = false;
 	}
@@ -23,9 +23,10 @@ void Lucy::load()
 {
 	Image *image;
 
-	ifstream file("memory.txt", ios::in);
+	wifstream file("memory.txt", ios::in);
+	file.imbue(locale(".1251"));
 
-	while (file)
+	while (!file.eof())
 	{
 		image = new Image();
 		file >> *image;
@@ -35,7 +36,8 @@ void Lucy::load()
 
 void Lucy::save()
 {
-	ofstream file("memory.txt", ios::out);
+	wofstream file("memory.txt", ios::out);
+	file.imbue(locale(".1251"));
 
 	for (auto image : memory)
 	{

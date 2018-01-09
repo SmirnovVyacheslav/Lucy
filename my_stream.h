@@ -3,9 +3,6 @@
 #include <thread>
 #include <mutex>
 
-#include <chrono>
-#include <future>
-
 #include <queue>
 
 #include <string>
@@ -16,25 +13,20 @@ using namespace std;
 class Stream
 {
 public:
-	//Stream() {};
 
-	virtual string in() = 0;
+	virtual wstring in() = 0;
 
-	virtual void out(string str) = 0;
+	virtual void out(wstring str) = 0;
 };
 
 class Console_Stream : public Stream
 {
-	//string input;
-
-	queue<string> input_msg;
-
-	//void input_thread(queue<string>& str);
+	queue<wstring> input_msg;
 
 public:
 	Console_Stream();
 
-	string in();
+	wstring in();
 
-	void out(string str);
+	void out(wstring str);
 };
