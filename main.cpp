@@ -1,5 +1,3 @@
-#pragma once
-
 #include "lucy.h"
 #include "my_stream.h"
 
