@@ -9,7 +9,7 @@ bool Lucy::think()
 {
 	read();//listern
 
-	if (in_msg.size() > 0 && in_msg[0] == L"Пока")
+	if (in_msg.size() > 0 && in_msg[0] == L"РџРѕРєР°")
 	{
 		result = false;
 	}
