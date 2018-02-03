@@ -1,4 +1,4 @@
-#include "my_stream.h"
+﻿#include "my_stream.h"
 
 mutex inp_mtx;
 
@@ -18,8 +18,10 @@ void input_thread(queue<wstring>& input_msg)
 
 Console_Stream::Console_Stream()
 {
-	wcin.imbue(locale(".866"));
-	wcout.imbue(locale(".866"));
+#ifdef _WIN32
+	_setmode(_fileno(stdin), _O_U16TEXT);
+	_setmode(_fileno(stdout), _O_U16TEXT);
+#endif
 
 	thread input(input_thread, ref(input_msg));
 

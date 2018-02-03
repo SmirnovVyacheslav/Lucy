@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <thread>
 #include <mutex>
@@ -9,6 +9,12 @@
 #include <iostream>
 
 using namespace std;
+
+#ifdef _WIN32
+#include <Windows.h>
+#include <io.h>
+#include <fcntl.h>
+#endif
 
 class Stream
 {

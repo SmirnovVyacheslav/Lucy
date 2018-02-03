@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 #include <random>
@@ -9,15 +9,12 @@
 
 #include <fstream>
 
-//#include <windows.h>
-
 #include "my_stream.h"
 #include "image.h"
-//#include "person.h"
 
 using namespace std;
 
-class Lucy//: public Person
+class Lucy
 {
 	unique_ptr<Stream> stream;
 

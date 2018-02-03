@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <memory>
 #include <vector>
@@ -6,6 +6,10 @@
 #include <unordered_map>
 
 #include <iostream>
+#include <string>
+
+#include <locale>
+#include <codecvt>
 #include <string>
 
 using namespace std;
@@ -22,13 +26,9 @@ class Image
 
 	int lru = 0;//last recently used
 
-	int fou;//frequency of use
-
-	//vector<Image*> attr;
+	int fou = 0;//frequency of use
 
 	unordered_map<wstring, int> ref;
-
-	//vector<pair<string, int>> ref;//reference with weight
 
 public:
 	

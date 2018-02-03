@@ -1,7 +1,7 @@
 CC=clang++
 CPPFLAGS=-std=c++17 -I.
 LDFLAGS=-lpthread
-SOURCES = image.cpp lucy.cpp main.cpp my_stream.cpp person.cpp
+SOURCES = image.cpp lucy.cpp main.cpp my_stream.cpp
 OBJS = $(SOURCES:.cpp=.o)
 MAIN = lucy
 

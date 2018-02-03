@@ -1,4 +1,7 @@
-#include "image.h"
+﻿#include "image.h"
+#include "my_stream.h"
+
+//std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
 
 wostream& operator << (wostream &stream, Image &image)
 {
@@ -22,7 +25,6 @@ wistream& operator >> (wistream &stream, Image &image)
 	stream >> image._name >> image.fou;
 
 	stream >> ref_name;
-
 	while (ref_name != L"|")
 	{
 		stream >> ref_fou;
