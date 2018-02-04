@@ -24,7 +24,7 @@ void Lucy::load()
 	Image *image;
 
 	wifstream file("memory.txt", ios::in);
-	file.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t, 0x10ffff, std::generate_header>));
+	file.imbue(std::locale(std::locale(), new std::codecvt_utf8<wchar_t, 0x10ffff, std::generate_header>));
 
 	if (file.is_open())
 	{
@@ -42,7 +42,7 @@ void Lucy::load()
 void Lucy::save()
 {
 	wofstream file;
-	file.imbue(std::locale(std::locale::empty(), new std::codecvt_utf8<wchar_t, 0x10ffff, std::consume_header>));
+	file.imbue(std::locale(std::locale(), new std::codecvt_utf8<wchar_t, 0x10ffff, std::generate_header>));
 
 	file.open("memory.txt", ios::out);
 
