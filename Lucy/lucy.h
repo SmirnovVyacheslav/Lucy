@@ -2,12 +2,13 @@
 
 #include <memory>
 #include <random>
+
 #include <string>
 #include <sstream>
+#include <fstream>
 
 #include <unordered_map>
 
-#include <fstream>
 
 #include "my_stream.h"
 #include "image.h"
@@ -16,24 +17,41 @@ using namespace std;
 
 class Lucy
 {
+	struct Sentence
+	{
+		int start, end;
+		Image *subject;
+
+		Sentence(int _start = 0, int _end = 0, Image *_subject = nullptr):
+			start(_start), end(_end), subject(_subject) {}
+	};
+
+	vector<Sentence*> conversation;
+
+	vector<Image*> images;
+
+	vector<Image*> image_sense;
+
 	unique_ptr<Stream> stream;
 
 	bool result = true;
 
-	wstring in, out;
-
-	vector<wstring> in_msg, out_mgs;
-
 	unordered_map<wstring, Image*> memory;
-
-	vector<wstring> conv;
 
 	wostringstream oss;
 	wistringstream iss;
 
-	vector<Image*> cache;
+	void sense(Sentence* sentence)
+	{
+		sentence->subject = nullptr;
+	}
 
-	Image* find(wstring name)
+	void sense(Image* image)
+	{
+		image_sense.clear();
+	}
+
+	Image* find_image(wstring name)
 	{
 		if (!memory[name])
 		{
@@ -43,38 +61,60 @@ class Lucy
 		return memory[name];
 	};
 
-	void update_ref()
+	void step_links(Sentence *sentence)
 	{
-		if (cache.size() > 1)
+		for (int i = sentence->start; i <= sentence->end; ++i)
 		{
-			for (int i = 0; i < cache.size() - 1; ++i)
+			for (int j = sentence->start; j <= sentence->end; ++j)
 			{
-				cache[i]->add_ref(cache[i + 1]);
+				if (i == i)
+				{
+					continue;
+				}
+				else if (j - i == 1)
+				{
+					images[i]->add_ref(images[j]->name(), 3);
+				}
+				else if (j - i == -1)
+				{
+					images[i]->add_ref(images[j]->name(), 2);
+				}
+				else
+				{
+					images[i]->add_ref(images[j]->name(), 1);
+				}
 			}
 		}
 	};
 
 	void read()
 	{
-		Image *image;
 		wstring word;
+
 		iss.clear();
 		iss.str(stream->in());
+		
+		if (!(iss >> word))
+			return;
 
-		in_msg.clear();
-		cache.clear();
+		images.push_back(find_image(word));
+		images.back()->step_using();
+
+		Sentence *sentence = new Sentence(images.size() - 1);
 
 		while (iss >> word)
 		{
-			image = find(word);
-			image->update();
-
-			cache.push_back(image);
-
-			in_msg.push_back(word);
+			images.push_back(find_image(word));
+			images.back()->step_using();
 		}
 
-		update_ref();
+		sentence->end = images.size() - 1;
+
+		step_links(sentence);
+
+		sense(sentence);
+
+		conversation.push_back(sentence);
 	};
 
 	void write()
@@ -103,6 +143,4 @@ public:
 	}
 
 	void talk();
-
-	bool think();
 };

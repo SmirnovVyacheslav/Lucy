@@ -28,6 +28,11 @@ class Image
 
 	int fou = 0;//frequency of use
 
+	const int max_lru = 1000;
+	const int max_fou = 10000;
+	const int max_ref = 1000;
+	const int min_ref = 1;
+
 	unordered_map<wstring, int> ref;
 
 public:
@@ -39,21 +44,21 @@ public:
 
 	Image() {};
 
-	void update()
+	void step_using()
 	{
-		lru++;
-		fou++;
+		lru = (++lru) % max_lru;
+		fou = (++fou) % max_fou;
 	};
 
-	void add_ref(Image *image)
+	void add_ref(wstring name, int value)
 	{
-		if (!ref[image->name()])
+		if (!ref[name])
 		{
-			ref[image->name()] = 1;
+			ref[name] = value;
 		}
 		else
 		{
-			ref[image->name()]++;
+			ref[name] = (ref[name] + value) % max_ref;
 		}
 	}
 
