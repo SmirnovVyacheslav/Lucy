@@ -29,8 +29,12 @@ class Console_Stream : public Stream
 {
 	queue<wstring> input_msg;
 
+	thread input;
+
 public:
 	Console_Stream();
+
+	~Console_Stream();
 
 	wstring in();
 

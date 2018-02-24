@@ -16,6 +16,11 @@ void input_thread(queue<wstring>& input_msg)
 	}
 }
 
+Console_Stream::~Console_Stream()
+{
+	input.~thread();
+}
+
 Console_Stream::Console_Stream()
 {
 #ifdef _WIN32
@@ -23,7 +28,8 @@ Console_Stream::Console_Stream()
 	_setmode(_fileno(stdout), _O_U16TEXT);
 #endif
 
-	thread input(input_thread, ref(input_msg));
+	//thread input(input_thread, ref(input_msg));
+	input = thread(input_thread, ref(input_msg));
 
 	input.detach();
 };

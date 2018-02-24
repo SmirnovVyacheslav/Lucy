@@ -67,7 +67,7 @@ class Lucy
 		{
 			for (int j = sentence->start; j <= sentence->end; ++j)
 			{
-				if (i == i)
+				if (i == j)
 				{
 					continue;
 				}
@@ -92,7 +92,10 @@ class Lucy
 		wstring word;
 
 		iss.clear();
-		iss.str(stream->in());
+		if (stream)
+			iss.str(stream->in());
+		else
+			return;
 		
 		if (!(iss >> word))
 			return;
@@ -139,6 +142,7 @@ public:
 
 	~Lucy()
 	{
+		stream.release();
 		save();
 	}
 
