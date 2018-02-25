@@ -6,10 +6,7 @@ void Lucy::talk()
 	{
 		read();//listern
 
-		/*if ((in_msg.size() > 0) && ((in_msg[0] == L"Пока") || (in_msg[0] == L"Bye")))
-		{
-			result = false;
-		}*/
+		
 
 		write();//say
 	};

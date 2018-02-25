@@ -9,6 +9,7 @@
 
 #include <unordered_map>
 
+#include <regex>
 
 #include "my_stream.h"
 #include "image.h"
@@ -40,6 +41,9 @@ class Lucy
 
 	wostringstream oss;
 	wistringstream iss;
+
+	std::wstring key = L"(,|\\.|!|\\?)";
+	std::wstring repr = L" $&";
 
 	void sense(Sentence* sentence)
 	{
@@ -93,10 +97,14 @@ class Lucy
 
 		iss.clear();
 		if (stream)
-			iss.str(stream->in());
+		{
+			word = std::regex_replace(stream->in(), std::wregex(key), repr);
+			std::transform(word.begin(), word.end(), word.begin(), ::towlower);
+			iss.str(word);
+		}
 		else
 			return;
-		
+
 		if (!(iss >> word))
 			return;
 
@@ -137,6 +145,8 @@ class Lucy
 public:
 	Lucy(Stream* _stream) : stream(_stream)
 	{
+		std::locale::global(std::locale(""));
+
 		load();
 	};
 
