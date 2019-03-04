@@ -1,2 +1,2 @@
 # Lucy
-II for talking
+AI for talking
